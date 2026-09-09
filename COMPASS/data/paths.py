@@ -49,20 +49,20 @@ import sys
 
 # Collections, fits, scans, best/transfer sweeps: zs_<model><dataset>_<subject>/
 # trees. Written by the pipeline; read by everything. 
-EMBED_ROOT = "/p/vast1/dutta5/embeddings"
+EMBED_ROOT = "path to your embeddings/collections"
 
 # The dataset caches (layout in section 2). Read-only inputs; the loaders
 # create a per-dataset subdirectory on first use and download into it.
-DATASETS_ROOT = "/p/vast1/dutta5/datasets"
+DATASETS_ROOT = "path to your dataset root"
 
 # Hugging Face model weights, one <org>__<name>/ per model (common.cache_safe_name).
-MODEL_CACHE_ROOT = "/p/vast1/dutta5/cache-dirs/models"
+MODEL_CACHE_ROOT = "path to your model cache roots"
 
 # One virtualenv per model family (three transformers generations that do not
 # coexist): requirements.txt / requirements-qwen3.txt / requirements-gemma4.txt.
-VENV_LLAMA = "/p/vast1/dutta5/envs/ICL-venv"
-VENV_QWEN3 = "/p/vast1/dutta5/envs/RS-venv"
-VENV_GEMMA4 = "/p/vast1/dutta5/envs/G4-venv"
+VENV_LLAMA = "path to your llama venv (requirements.txt)"
+VENV_QWEN3 = "path to your qwen3 venv (requirements-qwen3.txt)"
+VENV_GEMMA4 = "path to your gemma-4 venv (requirements-gemma4.txt)"
 
 # =============================================================================
 # 2. Dataset layout under DATASETS_ROOT (edit only if yours differs; an
