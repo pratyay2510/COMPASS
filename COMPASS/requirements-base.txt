@@ -1,0 +1,48 @@
+# =============================================================================
+# Shared base for the COMPASS environments.
+#
+# Everything here is independent of the transformers version, so it is pinned
+# ONCE and included by every overlay rather than copied:
+#
+#   requirements.txt          -> this file + transformers 4.49   (llama, ICL-venv)
+#   requirements-qwen3.txt    -> this file + transformers 4.57   (qwen3, RS-venv)
+#   requirements-gemma4.txt   -> this file + transformers 5.16   (gemma-4, G4-venv)
+#
+# Do not install this file on its own; it has no model stack.
+#
+# Versions are the ones the results were produced with, resolved from the live
+# environment on python 3.13.2 (verified 2026-08-07).
+# =============================================================================
+
+# ---- arrays, tables, fitting -----------------------------------------------
+numpy==2.1.2
+pandas==2.2.3
+scipy==1.15.3
+scikit-learn==1.6.1          # every probe: per-layer, per-head, the gate
+joblib==1.4.2                # head_probes.joblib
+
+# ---- ANSWER GRADING --------------------------------------------------------
+# Load-bearing and easy to miss. core/common.py:answers_equal imports
+# sympy.parsing INSIDE a try/except that returns None on failure, so a missing
+# sympy does not raise — it silently disables symbolic equivalence and every
+# answer that needs it is scored by string fallback instead. The labels change
+# and nothing tells you. Keep this pinned.
+sympy==1.13.3
+
+# ---- datasets --------------------------------------------------------------
+datasets==3.3.2
+pyarrow==19.0.0
+
+# ---- tokenizer helpers some checkpoints need at load time ------------------
+sentencepiece==0.2.1
+protobuf==5.29.3
+
+# ---- misc ------------------------------------------------------------------
+tqdm==4.67.1
+pytest==8.3.4                # src/utils/diagnostics/test_grading.py
+
+# ---- torch -----------------------------------------------------------------
+# The live environment runs 2.7.0+cu118. Plain `torch==2.7.0` resolves to the
+# default CUDA build on PyPI; for cu118 specifically, install it first with:
+#   pip install torch==2.7.0 --index-url https://download.pytorch.org/whl/cu118
+torch==2.7.0

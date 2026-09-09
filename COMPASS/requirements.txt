@@ -1,0 +1,36 @@
+# =============================================================================
+# COMPASS — the llama environment (meta-llama/Llama-3.1-8B-Instruct).
+#
+#     python3 -m venv .venv && source .venv/bin/activate
+#     pip install -r requirements.txt
+#
+# Works on any machine: no shared filesystem, no site-packages inheritance, no
+# cluster paths. (Its location goes into data/paths.py as VENV_LLAMA.)
+#
+# THE PIN THAT MATTERS: transformers 4.49.0. The per-head activation capture
+# (core/common.py:HeadCatcher), the o_proj hooks and the Eq. 2 steering path in
+# steering/steering_driver.py were written and verified against this version.
+# Upgrading is not a routine bump — re-run
+#     python3 -m src.utils.diagnostics.test_grading
+# and a DRY_RUN of run_compass.sh before trusting anything produced by a newer one.
+#
+# OTHER FAMILIES. transformers 4.49 cannot register the `qwen3` or
+# `gemma4_unified` architectures ("does not recognize this architecture"), so
+# those runs use their own environments: requirements-qwen3.txt (RS-venv,
+# transformers 4.57.6) and requirements-gemma4.txt (G4-venv, transformers 5.16).
+# Keep them separate; do not upgrade this one in place.
+#
+# Where the data goes is unrelated to this file: paths come from
+# $HENDRYCKS_MATH_ROOT / $HF_MODEL_CACHE_ROOT / $EMBED_ROOT, defaulted in
+# src/core/common.py and run_compass.sh, and are overridable by environment
+# variable. See RUNBOOK.md §7.
+# =============================================================================
+
+-r requirements-base.txt
+
+# ---- the model stack -------------------------------------------------------
+transformers==4.49.0         # PINNED — see the header before changing
+tokenizers==0.21.0
+huggingface_hub==0.29.2
+safetensors==0.5.3
+accelerate==1.14.0

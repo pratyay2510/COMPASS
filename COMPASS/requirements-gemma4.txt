@@ -1,0 +1,39 @@
+# =============================================================================
+# COMPASS — the gemma-4 environment. A THIRD venv, not an upgrade.
+#
+#     python3 -m venv .venv-gemma4 && source .venv-gemma4/bin/activate
+#     pip install torch==2.7.0 --index-url https://download.pytorch.org/whl/cu118
+#     pip install -r requirements-gemma4.txt
+#
+# (Its location goes into data/paths.py as VENV_GEMMA4.)
+#
+# WHY IT EXISTS. Same reason requirements-qwen3.txt exists, one generation
+# later: transformers 4.57.6 (the RS-venv pin every qwen3 number was measured
+# under) does not register the `gemma4_unified` architecture — loading
+# google/gemma-4-12B-it raises "does not recognize this architecture"; the
+# checkpoint was saved under transformers 5.10.0.dev0. Rather than upgrade the
+# environment the published numbers came from, gemma-4 gets its own overlay on
+# the 5.x line.
+#
+# Build ALL THREE and pick per run:
+#     MODEL_TAG=llama       ... -> requirements.txt         (transformers 4.49)
+#     MODEL_TAG=qwen3_4b    ... -> requirements-qwen3.txt   (transformers 4.57)
+#     MODEL_TAG=gemma4_12b  ... -> requirements-gemma4.txt  (transformers 5.16)
+#
+# CAVEAT, same as ever: a cross-model comparison whose arms were run under
+# different transformers versions is not perfectly controlled. Keep gemma-4
+# results labelled as such.
+# =============================================================================
+
+-r requirements-base.txt
+
+# ---- the transformers-5.x model stack --------------------------------------
+# The RS-venv pins (hub 0.36 / tokenizers 0.22) are IMPOSSIBLE here:
+# transformers 5.16 requires huggingface-hub>=1.5,<2.0, so the whole stack
+# moves together. Versions below are what pip resolved on 2026-08-31.
+transformers==5.16.1         # first family pin on the 5.x line; gemma4_unified
+tokenizers==0.23.1
+huggingface_hub==1.29.0
+hf-xet==1.6.0
+safetensors==0.8.0
+accelerate==1.14.0
