@@ -69,7 +69,7 @@ rung never wins by covering easier rows), the highest accuracy; ties go to the
 smaller alpha, then the band name. On roughly 300 dev rows the accuracy carries
 two to three points of noise: read the table's a* column beside the pick.
 
-Run (from COMPASS/):
+Run (from the repo root):
   python3 -m src.steering.operating_point plan   --scores_npz <elicit_scores.npz> \
       --heads_file <heads.sh> --collection <train dir> --emit <plan.sh>
   python3 -m src.steering.operating_point report --scan_root <scan_*> \

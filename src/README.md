@@ -1,7 +1,7 @@
 # `src/` — structure
 
 Every module is a CLI (`python3 -m src.<package>.<module> --help`) run from
-`COMPASS/`, and every module imports its dependencies absolutely
+the repo root, and every module imports its dependencies absolutely
 (`from src.core import common`). There are no `sys.path` tricks and no relative
 imports, so a module's location in this tree is exactly its import path.
 

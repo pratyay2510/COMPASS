@@ -2,7 +2,7 @@
 """EVERY machine-specific path the project reads, in one file.
 
 Edit section 1 (and section 2 if your dataset tree is laid out differently),
-nothing else. No other file in COMPASS/ holds an absolute path: Python
+nothing else. No other file in the repo holds an absolute path: Python
 modules import this file, shell scripts source its `--sh` output, so a path
 changed here changes everywhere at once.
 
@@ -12,7 +12,7 @@ changed here changes everywhere at once.
     python3 data/paths.py --json
 
 From bash (run_compass.sh, ablations.sh, every srun/ card), after the cd
-into COMPASS/:
+into the repo root:
 
     eval "$(python3 data/paths.py --sh)"
 
@@ -26,7 +26,8 @@ best` redirects that run and nothing else. Exported values win over this
 file, so a stale export in the shell silently redirects a tree -- the srun/
 cards unset the pipeline knobs for exactly this reason.
 
-BLANK VALUES. A name left "" is "not configured". Shell scripts refuse at the
+BLANK VALUES. A name left "" (or anything that is not an absolute path,
+such as the placeholder text a fresh clone ships with) is "not configured". Shell scripts refuse at the
 point of use (`: "${EMBED_ROOT:?...}"`), Python raises through require(),
 each naming this file. That is what a fresh clone sees until section 1 is
 filled in, and what --check reports.
@@ -114,10 +115,13 @@ def env_name(name: str) -> str:
 
 
 def resolve() -> dict:
-    """{name: value} with environment overrides applied; "" = not configured."""
+    """{name: value} with environment overrides applied; "" = not configured.
+    A value that is not an absolute path (placeholder text) counts as "".
+    """
     out = {}
     for name in ROOTS:
-        out[name] = (os.environ.get(env_name(name)) or _FILE_VALUES[name] or "").rstrip("/")
+        v = (os.environ.get(env_name(name)) or _FILE_VALUES[name] or "").rstrip("/")
+        out[name] = v if os.path.isabs(v) else ""
     ds = out["DATASETS_ROOT"]
     for name, rel in DATASET_LAYOUT.items():
         out[name] = os.environ.get(name) or (os.path.join(ds, rel) if ds else "")
