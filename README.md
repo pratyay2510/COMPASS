@@ -201,7 +201,7 @@ COMPASS/
 @inproceedings{dutta2026compass,
   title     = {{COMPASS}: Finding Where Reasoning Lives in Language Models},
   author    = {Dutta, Pratyay and Thopalli, Kowshik and Narayanaswamy, Vivek},
-  booktitle = {Advances in Neural Information Processing Systems},
+  booktitle = {arxiv},
   year      = {2026}
 }
 ```
